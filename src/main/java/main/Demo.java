@@ -169,10 +169,12 @@ public class Demo {
 
         Planner bfsPlanner = new BFSPlanner();
         Planner dfsPlanner = new DFSPlanner(500);
+        Planner uniPlanner = new UniformCostPlanner(new CostFunctionAllFeatures(torontoGraph));
 
         List<Planner> planners = new ArrayList<>();
         planners.add(bfsPlanner);
         planners.add(dfsPlanner);
+        planners.add(uniPlanner);
 
         //Show result on mapViewer
         Demo demo = new Demo(torontoGraph, planners);
