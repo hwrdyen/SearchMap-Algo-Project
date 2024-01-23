@@ -171,12 +171,14 @@ public class Demo {
         Planner dfsPlanner = new DFSPlanner(500);
         Planner uniPlanner = new UniformCostPlanner(new CostFunctionAllFeatures(torontoGraph));
         Planner greedyPlanner = new GreedyBestFirstPlanner(new AStarHeuristic(torontoGraph));
+        Planner astarPlanner = new AStarPlanner(new AStarHeuristic(torontoGraph), new CostFunctionAllFeatures(torontoGraph));
 
         List<Planner> planners = new ArrayList<>();
         planners.add(bfsPlanner);
         planners.add(dfsPlanner);
         planners.add(uniPlanner);
         planners.add(greedyPlanner);
+        planners.add(astarPlanner);
 
         //Show result on mapViewer
         Demo demo = new Demo(torontoGraph, planners);
