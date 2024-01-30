@@ -164,8 +164,9 @@ public class Demo {
      */
     public static void main(String[] args) {
         String osmFile = "./data/toronto.osm";
+        String queensFile = "./data/queens_park.osm";
         String cyclistsAccidentFile = "./data/Cyclists.csv";
-        Graph torontoGraph = new Graph(osmFile, cyclistsAccidentFile);
+        Graph torontoGraph = new Graph(queensFile, cyclistsAccidentFile);
 
         Planner bfsPlanner = new BFSPlanner();
         Planner dfsPlanner = new DFSPlanner(500);
