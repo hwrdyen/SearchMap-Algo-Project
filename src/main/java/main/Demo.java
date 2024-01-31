@@ -97,8 +97,13 @@ public class Demo {
     public List<List<GeoPosition>> runSearches(MapNode startNode, MapNode endNode, List<Planner> planners) {
         List<List<GeoPosition>> solutions = new ArrayList<>();
         for (Planner planner : planners) {
+            double startTime = System.nanoTime(); // Record start time
             PlanResult result = planner.plan(startNode, endNode);
+            double endTime = System.nanoTime(); // Record end time
+
+            double executionTime = (endTime - startTime)/1000000; // Calculate execution time in milliseconds
             System.out.printf("Result of Planner: %s:%n", planner.getName());
+            System.out.println("Execution Time (ms): " + executionTime);
             printResult(result);
 
             List<GeoPosition> geoList = new ArrayList<>();
