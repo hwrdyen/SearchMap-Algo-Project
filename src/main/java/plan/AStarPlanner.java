@@ -86,7 +86,7 @@ public class AStarPlanner extends Planner {
                     Double totaledge_cost = previousedge_cost + currentedge_cost;
 
                     // AStar = heuristic + sum_of_cost
-                    Double AStar_value = heuristic.getHeuristics(nextNode, goalNode) + totaledge_cost;
+                    Double AStar_value =  (0.01 * heuristic.getHeuristics(nextNode, goalNode)) + (0.99 * totaledge_cost);
 
                     // HashMap should store the node and its corresponding AStar value
                     edgeAStar_hashmap.put(nextNode, AStar_value);
@@ -94,8 +94,28 @@ public class AStarPlanner extends Planner {
                     // the lowest AStar will be selected first
                     edge_priorityqueue.add(AStar_value);
                 }
+                else {
+                    // current edge's cost
+                    Double currentedge_cost = costFunction.getCost(edge);
+                    // previous edge's sum cost
+                    Double previousedge_cost = edgeAStar_hashmap.get(sourceNode);
+
+                    // sum of cost from root to this current node
+                    Double totaledge_cost = previousedge_cost + currentedge_cost;
+
+                    // AStar = heuristic + sum_of_cost
+                    Double AStar_value = (0.01 * heuristic.getHeuristics(nextNode, goalNode)) + (0.99 * totaledge_cost);
+
+                    if (AStar_value < edgeAStar_hashmap.get(nextNode)) {
+                        parents.remove(nextNode);
+                        edge_priorityqueue.remove(edgeAStar_hashmap.get(nextNode));
+                        edgeAStar_hashmap.remove(nextNode);
+                        edgeAStar_hashmap.put(nextNode, AStar_value);
+                        edge_priorityqueue.add(AStar_value);
+                        parents.put(nextNode, smallestAStar_selectednode);
+                    }
+                }
             }
-            edgeAStar_hashmap.remove(smallestAStar_selectednode);
         }
 
         return new PlanResult(expandedNodes.size(), null);
