@@ -53,36 +53,34 @@ public class UniformCostPlanner extends Planner {
         while(!edge_priorityqueue.isEmpty()) {
             Double costEffect_edge = edge_priorityqueue.poll();
             MapNode costEffect_selectednode = null;
+            for (Map.Entry<MapNode, Double> entry: edgeCosts_hashmap.entrySet()) {
+                if(entry.getValue().equals(costEffect_edge)) {
+                    costEffect_selectednode = entry.getKey();
+                    break;
+                }
+            }
+
+            // =========== testing UCS =========== //
+//            ArrayList<MapNode> selectednodeList = new ArrayList<>();
 //            for (Map.Entry<MapNode, Double> entry: edgeCosts_hashmap.entrySet()) {
 //                if(entry.getValue().equals(costEffect_edge)) {
-//                    costEffect_selectednode = entry.getKey();
-//                    break;
+//                    selectednodeList.add(entry.getKey());
 //                }
 //            }
 
-            // =========== testing UCS =========== //
-            ArrayList<MapNode> selectednodeList = new ArrayList<>();
-            for (Map.Entry<MapNode, Double> entry: edgeCosts_hashmap.entrySet()) {
-                if(entry.getValue().equals(costEffect_edge)) {
-                    selectednodeList.add(entry.getKey());
-                }
-            }
-
-            if (selectednodeList.size() == 1) {
-                costEffect_selectednode = selectednodeList.get(0);
-            } else if (selectednodeList.size() > 1) {
-                System.out.println("hi");
-                Long smallest_id = Long.MAX_VALUE;
-                MapNode smallest_node = null;
-                for (int i = 0; i < selectednodeList.size(); i++) {
-                    if (selectednodeList.get(i).id < smallest_id) {
-                        smallest_id = selectednodeList.get(i).id;
-                        smallest_node = selectednodeList.get(i);
-                    }
-                }
-                costEffect_selectednode = smallest_node;
-            }
-            // =========== testing UCS =========== //
+//            if (selectednodeList.size() == 1) {
+//                costEffect_selectednode = selectednodeList.get(0);
+//            } else if (selectednodeList.size() > 1) {
+//                Long smallest_id = Long.MAX_VALUE;
+//                MapNode smallest_node = null;
+//                for (int i = 0; i < selectednodeList.size(); i++) {
+//                    if (selectednodeList.get(i).id < smallest_id) {
+//                        smallest_id = selectednodeList.get(i).id;
+//                        smallest_node = selectednodeList.get(i);
+//                    }
+//                }
+//                costEffect_selectednode = smallest_node;
+//            }
 
             expandedNodes.add(costEffect_selectednode);
             if(costEffect_selectednode.id == goalNode.id) {
@@ -120,17 +118,15 @@ public class UniformCostPlanner extends Planner {
                     Double totaledge_cost = previousedge_cost + currentedge_cost;
 
                     if (totaledge_cost < edgeCosts_hashmap.get(nextNode)) {
+                        parents.remove(nextNode);
                         edge_priorityqueue.remove(edgeCosts_hashmap.get(nextNode));
                         edgeCosts_hashmap.remove(nextNode);
                         edgeCosts_hashmap.put(nextNode, totaledge_cost);
                         edge_priorityqueue.add(totaledge_cost);
+                        parents.put(nextNode, costEffect_selectednode);
                     }
                 }
-                // =========== testing UCS =========== //
             }
-            // =========== testing UCS =========== //
-//            edgeCosts_hashmap.remove(costEffect_selectednode);
-            // =========== testing UCS =========== //
         }
 
         return new PlanResult(expandedNodes.size(), null);
