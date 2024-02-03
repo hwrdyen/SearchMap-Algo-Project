@@ -60,28 +60,6 @@ public class UniformCostPlanner extends Planner {
                 }
             }
 
-            // =========== testing UCS =========== //
-//            ArrayList<MapNode> selectednodeList = new ArrayList<>();
-//            for (Map.Entry<MapNode, Double> entry: edgeCosts_hashmap.entrySet()) {
-//                if(entry.getValue().equals(costEffect_edge)) {
-//                    selectednodeList.add(entry.getKey());
-//                }
-//            }
-
-//            if (selectednodeList.size() == 1) {
-//                costEffect_selectednode = selectednodeList.get(0);
-//            } else if (selectednodeList.size() > 1) {
-//                Long smallest_id = Long.MAX_VALUE;
-//                MapNode smallest_node = null;
-//                for (int i = 0; i < selectednodeList.size(); i++) {
-//                    if (selectednodeList.get(i).id < smallest_id) {
-//                        smallest_id = selectednodeList.get(i).id;
-//                        smallest_node = selectednodeList.get(i);
-//                    }
-//                }
-//                costEffect_selectednode = smallest_node;
-//            }
-
             expandedNodes.add(costEffect_selectednode);
             if(costEffect_selectednode.id == goalNode.id) {
                 return new PlanResult(expandedNodes.size(), getNodeList(parents, goalNode));
